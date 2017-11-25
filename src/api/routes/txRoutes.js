@@ -5,11 +5,6 @@ module.exports = function (app) {
     .get(tx.getAllTxs)
     .post(tx.createTx);
 
-  app.route('/txs/search-by-company')
-    .get(tx.getTxByCompany);
-
-  app.route('/txs/:txId')
-    .get(tx.getTx)
-    .put(tx.updateTx)
-    .delete(tx.deleteTx);
+  app.route('/txs/current')
+    .get(tx.getCurrentTxs);
 };

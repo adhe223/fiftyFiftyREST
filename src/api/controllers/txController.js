@@ -1,36 +1,51 @@
 const Transactions = require('../../db/models/Transaction');
 
 const getAllTxs = (req, res) => {
-  Transactions.find((err, txs) => {
-    if (err) {
-      const errLog = `Error retrieving txs: ${err}`;
-      console.log(errLog);
-      res.send(errLog);
-    } else {
-      res.send(txs);
-    }
-    res.end();
-  });
+  Transactions.find()
+    .exec((err, txs) => {
+      if (err) {
+        const errLog = `Error retrieving txs: ${err}`;
+        console.log(errLog);
+        res.send(errLog);
+      } else {
+        res.send(txs);
+      }
+      res.end();
+    });
 };
 
 const getCurrentTxs = (req, res) => {
-  res.send('NOT IMPLEMENTED: Tx current GET');
+  Transactions.find({ settled: false })
+    .exec((err, currentTxs) => {
+      if (err) {
+        const errLog = `Error retrieving current txs: ${err}`;
+        console.log(errLog);
+        res.send(errLog);
+      } else {
+        res.send(currentTxs);
+      }
+      res.end();
+    });
 };
 
 const createTx = (req, res) => {
-  const tx = {
+  const tx = new Transactions({
     description: req.body.description,
     date: req.body.date,
     amount: req.body.amount,
-    person: req.body.person,
+    person: req.body.personId,
     settled: req.body.settled
-  };
+  });
 
-  Transactions.insertOne(tx, (err) => {
+  tx.save(tx, (err) => {
     if (err) {
-      console.log(`Error inserting tx: ${err}`);
+      const errLog = `Error inserting tx: ${err}`;
+      console.log(errLog);
+      res.send(errLog);
+    } else {
+      console.log('Document inserted');
     }
-    console.log('Document inserted');
+    res.end();
   });
 };
 

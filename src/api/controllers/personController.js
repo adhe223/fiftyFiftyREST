@@ -2,16 +2,17 @@ const Person = require('../../db/models/Person');
 
 const getAllPeople = (req, res) => {
   console.log('Finding people');
-  Person.find((err, people) => {
-    if (err) {
-      const errLog = `Error retrieving people: ${err}`;
-      console.log(errLog);
-      res.send(errLog);
-    } else {
-      res.send(people);
-    }
-    res.end();
-  });
+  Person.find()
+    .exec((err, people) => {
+      if (err) {
+        const errLog = `Error retrieving people: ${err}`;
+        console.log(errLog);
+        res.send(errLog);
+      } else {
+        res.send(people);
+      }
+      res.end();
+    });
 };
 
 const createPerson = (req, res) => {

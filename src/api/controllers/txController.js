@@ -2,6 +2,7 @@ const Transactions = require('../../db/models/Transaction');
 
 const getAllTxs = (req, res) => {
   Transactions.find()
+    .populate('person')
     .exec((err, txs) => {
       if (err) {
         const errLog = `Error retrieving txs: ${err}`;
@@ -16,6 +17,7 @@ const getAllTxs = (req, res) => {
 
 const getCurrentTxs = (req, res) => {
   Transactions.find({ settled: false })
+    .populate('person')
     .exec((err, currentTxs) => {
       if (err) {
         const errLog = `Error retrieving current txs: ${err}`;
@@ -37,7 +39,7 @@ const createTx = (req, res) => {
     settled: req.body.settled
   });
 
-  tx.save(tx, (err) => {
+  tx.save(tx, err => {
     if (err) {
       const errLog = `Error inserting tx: ${err}`;
       console.log(errLog);

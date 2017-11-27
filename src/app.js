@@ -5,7 +5,7 @@ const personRoutes = require('./api/routes/personRoutes');
 const bodyParser = require('body-parser');
 const db = require('./db/db');
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8080;
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
